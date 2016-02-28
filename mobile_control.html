@@ -3,6 +3,7 @@
 <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
 <script src="/js/hammer.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
 <script>
   var socket = io();
   function init(){
@@ -30,8 +31,9 @@
             direction = 2;
           }
         }
-        socket.emit('movement', direction);
+        // socket.emit('movement', {direction: direction, time: Date.now()});
         document.getElementById('body').innerHTML = direction;
+        $.post( "/mobile_data", { direction: direction, time: Date.now() } );
     });
   }
 </script>
