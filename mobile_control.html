@@ -1,0 +1,43 @@
+<html>
+<head>
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+<script src="/js/hammer.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+  function init(){
+    var hammertime = new Hammer(document.getElementById('body'));
+    hammertime.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+    hammertime.on('swipe', function(ev) {
+        // console.log(ev.overallVelocity,ev.overallVelocityX,ev.overallVelocityY);
+        var direction;
+        // This case, x is bigger than y, therefore a horizontal movement
+        if (Math.abs(ev.overallVelocityX) > Math.abs(ev.overallVelocityY)){
+          // to the left
+          if (ev.overallVelocityX < 0){
+            direction = 3;
+          }
+          else{
+            direction = 1;
+          }
+        }
+        else{
+          if (ev.overallVelocityY < 0){
+            direction = 0;
+          }
+          else{
+            
+            direction = 2;
+          }
+        }
+        socket.emit('movement', direction);
+        document.getElementById('body').innerHTML = direction;
+    });
+  }
+</script>
+
+</head>
+<body id="body" onload="init()">
+
+</body>
+</html>
